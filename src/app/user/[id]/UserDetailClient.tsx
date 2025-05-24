@@ -2,14 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
 import {
   ArrowLeft,
   User,
   Mail,
-  Phone,
-  Globe,
-  MapPin,
-  Building,
   Album as AlbumIcon,
   Eye,
   ChevronRight as BreadcrumbChevron,
@@ -177,9 +174,11 @@ export default function UserDetailPage() {
               <div className="bg-gray-50 rounded-lg p-6 mb-8">
                 <div className="flex items-start space-x-6">
                   <div className="flex-shrink-0">
-                    <img
+                    <Image
                       src={generateAvatarUrl(user.name)}
                       alt={user.name}
+                      width={96}
+                      height={96}
                       className="h-24 w-24 rounded-full"
                     />
                   </div>

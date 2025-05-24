@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
 import {
   ArrowLeft,
   User,
@@ -262,9 +263,11 @@ export default function AlbumDetailPage() {
                     onClick={handleUserClick}
                     title={`View user ${album.user?.name || "Unknown"}`}
                   >
-                    <img
+                    <Image
                       src={generateAvatarUrl(album.user?.name || "Unknown")}
                       alt={album.user?.name || "Unknown"}
+                      width={64}
+                      height={64}
                       className="h-16 w-16 rounded-full hover:ring-2 hover:ring-blue-500 transition-all"
                     />
                   </div>
@@ -313,9 +316,11 @@ export default function AlbumDetailPage() {
                           className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
                           onClick={() => handlePhotoClick(photo)}
                         >
-                          <img
+                          <Image
                             src={getValidImageUrl(photo.thumbnailUrl, photo.id)}
                             alt={photo.title}
+                            width={400}
+                            height={160}
                             className="w-full h-40 object-cover"
                             onError={(e) => handleImageError(e, photo)}
                           />
@@ -431,9 +436,11 @@ export default function AlbumDetailPage() {
 
             {/* Modal Content */}
             <div className="p-4">
-              <img
+              <Image
                 src={getValidImageUrl(selectedPhoto.url, selectedPhoto.id)}
                 alt={selectedPhoto.title}
+                width={800}
+                height={600}
                 className="w-full h-auto max-h-[70vh] object-contain cursor-pointer"
                 onClick={() => openPhotoUrl(selectedPhoto.url)}
                 onError={(e) => handleImageError(e, selectedPhoto)}
@@ -446,7 +453,7 @@ export default function AlbumDetailPage() {
                   <strong>Album ID:</strong> {selectedPhoto.albumId}
                 </p>
                 <p className="mt-2 text-xs text-gray-500">
-                  Click the image or "Open URL" to view in full size
+                  Click the image or &quot;Open URL&quot; to view in full size
                 </p>
               </div>
             </div>

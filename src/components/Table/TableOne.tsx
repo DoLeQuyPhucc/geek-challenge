@@ -1,29 +1,29 @@
 import React from "react";
 
-export interface TableColumn {
+export interface TableColumn<T = Record<string, unknown>> {
   key: string;
   header: string;
-  render?: (value: any, row: any) => React.ReactNode;
+  render?: (value: unknown, row: T) => React.ReactNode;
   className?: string;
 }
 
-export interface TableOneProps {
-  columns: TableColumn[];
-  data: any[];
+export interface TableOneProps<T = Record<string, unknown>> {
+  columns: TableColumn<T>[];
+  data: T[];
   className?: string;
   headerClassName?: string;
   rowClassName?: string;
   cellClassName?: string;
 }
 
-const TableOne: React.FC<TableOneProps> = ({
+const TableOne = <T extends Record<string, unknown> = Record<string, unknown>>({
   columns,
   data,
   className = "",
   headerClassName = "",
   rowClassName = "",
   cellClassName = "",
-}) => {
+}: TableOneProps<T>) => {
   return (
     <div className={`overflow-x-auto ${className}`}>
       <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
@@ -53,8 +53,8 @@ const TableOne: React.FC<TableOneProps> = ({
                   className={`px-6 py-4 whitespace-nowrap text-sm text-gray-900 ${cellClassName}`}
                 >
                   {column.render
-                    ? column.render(row[column.key], row)
-                    : row[column.key]}
+                    ? column.render(row[column.key as keyof T], row)
+                    : String(row[column.key as keyof T] ?? '')}
                 </td>
               ))}
             </tr>

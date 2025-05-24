@@ -7,7 +7,7 @@ import Navbar from "@/layouts/DefaultLayout/Navbar";
 import Sidebar from "@/layouts/DefaultLayout/Sidebar";
 import { getUsers } from "@/services/UserService";
 
-interface User {
+interface User extends Record<string, unknown> {
   id: number;
   name: string;
   email: string;

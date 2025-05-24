@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Users, Album, Menu, X } from "lucide-react";
 
@@ -70,9 +71,11 @@ const Sidebar = () => {
           <div className="p-4 lg:p-6 pt-16 lg:pt-6 bg-white">
             <Link href="/album">
               <button>
-                <img
+                <Image
                   src="https://geekup.vn/Icons/geekup-logo-general.svg"
                   alt="GeekUp Logo"
+                  width={105}
+                  height={28}
                   className="h-7 w-auto"
                   style={{ aspectRatio: "15/4" }}
                 />

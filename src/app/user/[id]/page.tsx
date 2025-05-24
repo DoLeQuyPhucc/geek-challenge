@@ -6,9 +6,9 @@ import { Metadata } from "next";
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const userId = params.id;
+  const { id: userId } = await params;
 
   return {
     title: `#${userId} Show User`,

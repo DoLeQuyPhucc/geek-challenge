@@ -6,9 +6,9 @@ import React from "react";
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const albumId = params.id;
+  const { id: albumId } = await params;
 
   return {
     title: `#${albumId} Show Album`,

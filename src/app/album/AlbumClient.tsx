@@ -13,14 +13,14 @@ export const metadata: Metadata = {
   title: "Album",
 };
 
-interface User {
+interface User extends Record<string, unknown> {
   id: number;
   name: string;
   email: string;
   username: string;
 }
 
-interface Album {
+interface Album extends Record<string, unknown> {
   id: number;
   title: string;
   userId: number;

@@ -1,8 +1,9 @@
 import React from "react";
 import { Eye } from "lucide-react";
+import Image from "next/image";
 import TableOne, { TableColumn } from "../Table/TableOne";
 
-interface User {
+interface User extends Record<string, unknown> {
   id: number;
   name: string;
   email: string;
@@ -32,7 +33,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, onViewDetail }) => {
     )}&background=random&color=fff&size=64`;
   };
 
-  const columns: TableColumn[] = [
+  const columns: TableColumn<User>[] = [
     {
       key: "id",
       header: "ID",
@@ -42,11 +43,13 @@ const UserTable: React.FC<UserTableProps> = ({ users, onViewDetail }) => {
       key: "avatar",
       header: "Avatar",
       className: "w-20",
-      render: (value: string, row: User) => (
+      render: (value: unknown, row: User) => (
         <div className="flex items-center justify-center">
-          <img
+          <Image
             src={generateAvatarUrl(row.name)}
             alt={row.name}
+            width={40}
+            height={40}
             className="h-10 w-10 rounded-full"
           />
         </div>
@@ -55,47 +58,47 @@ const UserTable: React.FC<UserTableProps> = ({ users, onViewDetail }) => {
     {
       key: "name",
       header: "Name",
-      render: (value: string) => (
-        <span className="font-medium text-gray-900">{value}</span>
+      render: (value: unknown) => (
+        <span className="font-medium text-gray-900">{String(value)}</span>
       ),
     },
     {
       key: "email",
       header: "Email",
-      render: (value: string) => (
+      render: (value: unknown) => (
         <a
-          href={`mailto:${value}`}
+          href={`mailto:${String(value)}`}
           className="text-blue-600 hover:text-blue-800"
-          title={`Send email to ${value}`}
+          title={`Send email to ${String(value)}`}
         >
-          {value}
+          {String(value)}
         </a>
       ),
     },
     {
       key: "phone",
       header: "Phone",
-      render: (value: string) => (
+      render: (value: unknown) => (
         <a
-          href={`tel:${value}`}
+          href={`tel:${String(value)}`}
           className="text-blue-600 hover:text-blue-800"
-          title={`Call ${value}`}
+          title={`Call ${String(value)}`}
         >
-          {value}
+          {String(value)}
         </a>
       ),
     },
     {
       key: "website",
       header: "Website",
-      render: (value: string) => (
+      render: (value: unknown) => (
         <a
-          href={`https://${value}`}
+          href={`https://${String(value)}`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-blue-600 hover:text-blue-800"
         >
-          {value}
+          {String(value)}
         </a>
       ),
     },
@@ -103,7 +106,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, onViewDetail }) => {
       key: "actions",
       header: "Actions",
       className: "w-32",
-      render: (value: any, row: User) => (
+      render: (value: unknown, row: User) => (
         <button
           onClick={() => onViewDetail(row.id)}
           className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
@@ -125,7 +128,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, onViewDetail }) => {
         </span>
       </div>
 
-      <TableOne
+      <TableOne<User>
         columns={columns}
         data={users}
         className="shadow-lg"
