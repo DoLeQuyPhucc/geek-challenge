@@ -1,7 +1,17 @@
+import AlbumTable from '@/components/Albums/AlbumTable'
 import Navbar from "@/layouts/DefaultLayout/Navbar";
 import Sidebar from "@/layouts/DefaultLayout/Sidebar";
+import React from 'react'
 
-export default function Home() {
+function page() {
+  // Sample data for demonstration
+  const sampleAlbums = [
+    { id: 1, title: "Abbey Road", artist: "The Beatles", year: 1969 },
+    { id: 2, title: "Dark Side of the Moon", artist: "Pink Floyd", year: 1973 },
+    { id: 3, title: "Thriller", artist: "Michael Jackson", year: 1982 },
+    { id: 4, title: "Back in Black", artist: "AC/DC", year: 1980 },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="flex">
@@ -11,13 +21,7 @@ export default function Home() {
           {/* Main content area */}
           <main className="flex-1 p-6 lg:p-8">
             <div className="bg-white rounded-lg shadow-sm p-6 min-h-[calc(100vh-8rem)]">
-              <h1 className="text-2xl font-bold text-gray-900 mb-4">
-                Welcome to MyApp
-              </h1>
-              <p className="text-gray-600">
-                This is the main content area. Select an option from the sidebar
-                to get started.
-              </p>
+              <AlbumTable albums={sampleAlbums} />
             </div>
           </main>
         </div>
@@ -25,3 +29,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default page
