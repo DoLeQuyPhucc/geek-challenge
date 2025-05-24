@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export interface TableColumn {
   key: string;
@@ -19,10 +19,10 @@ export interface TableOneProps {
 const TableOne: React.FC<TableOneProps> = ({
   columns,
   data,
-  className = '',
-  headerClassName = '',
-  rowClassName = '',
-  cellClassName = ''
+  className = "",
+  headerClassName = "",
+  rowClassName = "",
+  cellClassName = "",
 }) => {
   return (
     <div className={`overflow-x-auto ${className}`}>
@@ -32,7 +32,9 @@ const TableOne: React.FC<TableOneProps> = ({
             {columns.map((column) => (
               <th
                 key={column.key}
-                className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200 ${column.className || ''}`}
+                className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200 ${
+                  column.className || ""
+                }`}
               >
                 {column.header}
               </th>
@@ -50,10 +52,9 @@ const TableOne: React.FC<TableOneProps> = ({
                   key={column.key}
                   className={`px-6 py-4 whitespace-nowrap text-sm text-gray-900 ${cellClassName}`}
                 >
-                  {column.render 
+                  {column.render
                     ? column.render(row[column.key], row)
-                    : row[column.key]
-                  }
+                    : row[column.key]}
                 </td>
               ))}
             </tr>
@@ -61,9 +62,7 @@ const TableOne: React.FC<TableOneProps> = ({
         </tbody>
       </table>
       {data.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
-          Không có dữ liệu để hiển thị
-        </div>
+        <div className="text-center py-8 text-gray-500">No data to display</div>
       )}
     </div>
   );

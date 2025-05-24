@@ -66,6 +66,10 @@ function AlbumPageContent() {
     router.push(`/album/${albumId}`);
   };
 
+  const handleUserClick = (userId: number) => {
+    router.push(`/user/${userId}`);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-100">
@@ -99,14 +103,14 @@ function AlbumPageContent() {
                 <div className="flex items-center justify-center h-64">
                   <div className="text-center">
                     <div className="text-red-500 text-lg font-medium mb-2">
-                      Lỗi
+                      Error
                     </div>
                     <div className="text-gray-600">{error}</div>
                     <button
                       onClick={() => window.location.reload()}
                       className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
                     >
-                      Thử lại
+                      Try again
                     </button>
                   </div>
                 </div>
@@ -135,6 +139,7 @@ function AlbumPageContent() {
                 totalItems={totalAlbums}
                 onViewDetail={handleViewDetail}
                 onPageSizeChange={changePageSize}
+                onUserClick={handleUserClick}
               />
             </div>
           </main>

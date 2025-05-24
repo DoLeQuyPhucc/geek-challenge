@@ -26,6 +26,7 @@ interface AlbumTableProps {
   totalItems: number;
   onViewDetail: (albumId: number) => void;
   onPageSizeChange?: (size: number) => void;
+  onUserClick?: (userId: number) => void;
 }
 
 const AlbumTable: React.FC<AlbumTableProps> = ({
@@ -37,6 +38,7 @@ const AlbumTable: React.FC<AlbumTableProps> = ({
   totalItems,
   onViewDetail,
   onPageSizeChange,
+  onUserClick,
 }) => {
   const generateAvatarUrl = (name: string) => {
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(
@@ -60,19 +62,20 @@ const AlbumTable: React.FC<AlbumTableProps> = ({
     {
       key: "user",
       header: "User",
-      render: (user: User) => (
-        <div className="flex items-center">
+      render: (user: User, row: Album) => (
+        <div 
+          className={`flex items-center ${onUserClick ? 'cursor-pointer hover:bg-gray-50 rounded-md p-1 -m-1 transition-colors' : ''}`}
+          onClick={() => onUserClick && user?.id && onUserClick(user.id)}
+          title={onUserClick ? `View user ${user?.name || 'Unknown'}` : undefined}
+        >
           <img
             src={generateAvatarUrl(user?.name || "Unknown")}
             alt={user?.name || "Unknown"}
             className="h-8 w-8 rounded-full mr-3"
           />
           <div>
-            <div className="font-medium text-gray-900">
+            <div className={`font-medium ${onUserClick ? 'text-blue-600 hover:text-blue-800' : 'text-gray-900'}`}>
               {user?.name || "Unknown"}
-            </div>
-            <div className="text-sm text-gray-500">
-              @{user?.username || "unknown"}
             </div>
           </div>
         </div>

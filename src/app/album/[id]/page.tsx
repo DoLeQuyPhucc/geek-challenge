@@ -10,6 +10,7 @@ import {
   ChevronRight,
   X,
   ExternalLink,
+  Mail,
 } from "lucide-react";
 import Navbar from "@/layouts/DefaultLayout/Navbar";
 import Sidebar from "@/layouts/DefaultLayout/Sidebar";
@@ -92,6 +93,13 @@ export default function AlbumDetailPage() {
   const openPhotoUrl = (url: string) => {
     const validUrl = getValidImageUrl(url);
     window.open(validUrl, "_blank");
+  };
+
+  // Navigate to user detail page
+  const handleUserClick = () => {
+    if (album?.user?.id) {
+      router.push(`/user/${album.user.id}`);
+    }
   };
 
   useEffect(() => {
@@ -236,35 +244,36 @@ export default function AlbumDetailPage() {
               {/* Album Info */}
               <div className="bg-gray-50 rounded-lg p-6 mb-8">
                 <div className="flex items-start space-x-6">
-                  <div className="flex-shrink-0">
+                  <div 
+                    className="flex-shrink-0 cursor-pointer"
+                    onClick={handleUserClick}
+                    title={`View user ${album.user?.name || 'Unknown'}`}
+                  >
                     <img
                       src={generateAvatarUrl(album.user?.name || "Unknown")}
                       alt={album.user?.name || "Unknown"}
-                      className="h-16 w-16 rounded-full"
+                      className="h-16 w-16 rounded-full hover:ring-2 hover:ring-blue-500 transition-all"
                     />
                   </div>
                   <div className="flex-1">
-                    <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                      {album.title}
+                    <h2 
+                      className="text-xl font-semibold text-blue-600 hover:text-blue-800 mb-2 cursor-pointer transition-colors"
+                      onClick={handleUserClick}
+                      title={`View user ${album.user?.name || 'Unknown'}`}
+                    >
+                      {album.user?.name}
                     </h2>
                     <div className="space-y-2">
                       <div className="flex items-center text-gray-600">
-                        <User className="h-4 w-4 mr-2" />
-                        <span className="font-medium">{album.user?.name}</span>
-                        <span className="ml-2 text-sm">
-                          (@{album.user?.username})
-                        </span>
+                        <Mail className="h-4 w-4 mr-2" />
+                        <span className="font-medium">Email:</span>
+                        <a
+                          href={`mailto:${album.user?.email}`}
+                          className="ml-2 text-blue-600 hover:text-blue-800"
+                        >
+                          {album.user?.email}
+                        </a>
                       </div>
-                      <div className="flex items-center text-gray-600">
-                        <ImageIcon className="h-4 w-4 mr-2" />
-                        <span>{totalPhotos} photos</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-sm text-gray-500">Album ID</div>
-                    <div className="text-lg font-semibold text-gray-900">
-                      #{album.id}
                     </div>
                   </div>
                 </div>

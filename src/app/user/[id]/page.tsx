@@ -177,11 +177,6 @@ export default function UserDetailPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-3">
                         <div className="flex items-center text-gray-600">
-                          <User className="h-4 w-4 mr-2" />
-                          <span className="font-medium">Username:</span>
-                          <span className="ml-2">@{user.username}</span>
-                        </div>
-                        <div className="flex items-center text-gray-600">
                           <Mail className="h-4 w-4 mr-2" />
                           <span className="font-medium">Email:</span>
                           <a
@@ -191,48 +186,7 @@ export default function UserDetailPage() {
                             {user.email}
                           </a>
                         </div>
-                        <div className="flex items-center text-gray-600">
-                          <Phone className="h-4 w-4 mr-2" />
-                          <span className="font-medium">Phone:</span>
-                          <span className="ml-2">{user.phone}</span>
-                        </div>
-                        <div className="flex items-center text-gray-600">
-                          <Globe className="h-4 w-4 mr-2" />
-                          <span className="font-medium">Website:</span>
-                          <a
-                            href={`https://${user.website}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="ml-2 text-blue-600 hover:text-blue-800"
-                          >
-                            {user.website}
-                          </a>
-                        </div>
                       </div>
-                      <div className="space-y-3">
-                        <div className="flex items-start text-gray-600">
-                          <MapPin className="h-4 w-4 mr-2 mt-0.5" />
-                          <div>
-                            <span className="font-medium">Address:</span>
-                            <div className="ml-2 text-sm">
-                              {user.address.suite} {user.address.street}
-                              <br />
-                              {user.address.city}, {user.address.zipcode}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex items-center text-gray-600">
-                          <Building className="h-4 w-4 mr-2" />
-                          <span className="font-medium">Company:</span>
-                          <span className="ml-2">{user.company.name}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-sm text-gray-500">User ID</div>
-                    <div className="text-lg font-semibold text-gray-900">
-                      #{user.id}
                     </div>
                   </div>
                 </div>
@@ -250,34 +204,53 @@ export default function UserDetailPage() {
                 </div>
 
                 {albums.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {albums.map((album) => (
-                      <div
-                        key={album.id}
-                        className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
-                      >
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <div className="flex items-center mb-2">
-                              <AlbumIcon className="h-5 w-5 text-gray-400 mr-2" />
-                              <span className="text-sm text-gray-500">
-                                Album #{album.id}
-                              </span>
-                            </div>
-                            <h4 className="text-sm font-medium text-gray-900 mb-3 line-clamp-2">
+                  <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                    <table className="min-w-full divide-y divide-gray-300">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th
+                            scope="col"
+                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            ID
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Title
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Action
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {albums.map((album) => (
+                          <tr key={album.id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                              {album.id}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                               {album.title}
-                            </h4>
-                          </div>
-                        </div>
-                        <button
-                          onClick={() => handleViewAlbum(album.id)}
-                          className="w-full flex items-center justify-center px-3 py-2 text-sm text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-md transition-colors border border-blue-200"
-                        >
-                          <Eye className="h-4 w-4 mr-1" />
-                          View Album
-                        </button>
-                      </div>
-                    ))}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                              <button
+                                onClick={() => handleViewAlbum(album.id)}
+                                className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                                title="View album detail"
+                              >
+                                <Eye className="h-4 w-4 mr-1" />
+                                Show
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 ) : (
                   <div className="text-center py-12 text-gray-500">

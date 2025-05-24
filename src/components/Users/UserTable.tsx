@@ -62,12 +62,28 @@ const UserTable: React.FC<UserTableProps> = ({ users, onViewDetail }) => {
     {
       key: "email",
       header: "Email",
-      render: (value: string) => <span className="text-gray-600">{value}</span>,
+      render: (value: string) => (
+        <a
+          href={`mailto:${value}`}
+          className="text-blue-600 hover:text-blue-800"
+          title={`Send email to ${value}`}
+        >
+          {value}
+        </a>
+      ),
     },
     {
       key: "phone",
       header: "Phone",
-      render: (value: string) => <span className="text-gray-600">{value}</span>,
+      render: (value: string) => (
+        <a
+          href={`tel:${value}`}
+          className="text-blue-600 hover:text-blue-800"
+          title={`Call ${value}`}
+        >
+          {value}
+        </a>
+      ),
     },
     {
       key: "website",
@@ -77,7 +93,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, onViewDetail }) => {
           href={`https://${value}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-600 hover:text-blue-800 underline"
+          className="text-blue-600 hover:text-blue-800"
         >
           {value}
         </a>

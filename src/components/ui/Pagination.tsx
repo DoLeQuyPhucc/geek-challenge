@@ -1,5 +1,5 @@
-import React from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface PaginationProps {
   currentPage: number;
@@ -16,7 +16,7 @@ const Pagination: React.FC<PaginationProps> = ({
   onPageChange,
   itemsPerPage,
   totalItems,
-  onPageSizeChange
+  onPageSizeChange,
 }) => {
   const startItem = (currentPage - 1) * itemsPerPage + 1;
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);
@@ -28,12 +28,16 @@ const Pagination: React.FC<PaginationProps> = ({
     const range = [];
     const rangeWithDots = [];
 
-    for (let i = Math.max(2, currentPage - delta); i <= Math.min(totalPages - 1, currentPage + delta); i++) {
+    for (
+      let i = Math.max(2, currentPage - delta);
+      i <= Math.min(totalPages - 1, currentPage + delta);
+      i++
+    ) {
       range.push(i);
     }
 
     if (currentPage - delta > 2) {
-      rangeWithDots.push(1, '...');
+      rangeWithDots.push(1, "...");
     } else {
       rangeWithDots.push(1);
     }
@@ -41,7 +45,7 @@ const Pagination: React.FC<PaginationProps> = ({
     rangeWithDots.push(...range);
 
     if (currentPage + delta < totalPages - 1) {
-      rangeWithDots.push('...', totalPages);
+      rangeWithDots.push("...", totalPages);
     } else {
       rangeWithDots.push(totalPages);
     }
@@ -72,14 +76,14 @@ const Pagination: React.FC<PaginationProps> = ({
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div className="flex items-center space-x-4">
           <p className="text-sm text-gray-700">
-            Hiển thị <span className="font-medium">{startItem}</span> đến{' '}
-            <span className="font-medium">{endItem}</span> trong tổng số{' '}
-            <span className="font-medium">{totalItems}</span> kết quả
+            Show <span className="font-medium">{startItem}</span> to{" "}
+            <span className="font-medium">{endItem}</span> of{" "}
+            <span className="font-medium">{totalItems}</span> results
           </p>
           {onPageSizeChange && (
             <div className="flex items-center space-x-2">
               <label htmlFor="pageSize" className="text-sm text-gray-700">
-                Hiển thị:
+                Show:
               </label>
               <select
                 id="pageSize"
@@ -93,13 +97,16 @@ const Pagination: React.FC<PaginationProps> = ({
                   </option>
                 ))}
               </select>
-              <span className="text-sm text-gray-700">/ trang</span>
+              <span className="text-sm text-gray-700">/ page</span>
             </div>
           )}
         </div>
         {totalPages > 1 && (
           <div>
-            <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+            <nav
+              className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+              aria-label="Pagination"
+            >
               <button
                 onClick={() => onPageChange(currentPage - 1)}
                 disabled={currentPage === 1}
@@ -110,7 +117,7 @@ const Pagination: React.FC<PaginationProps> = ({
               </button>
               {getVisiblePages().map((page, index) => (
                 <React.Fragment key={index}>
-                  {page === '...' ? (
+                  {page === "..." ? (
                     <span className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
                       ...
                     </span>
@@ -119,8 +126,8 @@ const Pagination: React.FC<PaginationProps> = ({
                       onClick={() => onPageChange(page as number)}
                       className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                         currentPage === page
-                          ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
-                          : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                          ? "z-10 bg-blue-50 border-blue-500 text-blue-600"
+                          : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50"
                       }`}
                     >
                       {page}
@@ -144,4 +151,4 @@ const Pagination: React.FC<PaginationProps> = ({
   );
 };
 
-export default Pagination; 
+export default Pagination;
