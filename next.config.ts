@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "geekup.vn",
       },
+      {
+        protocol: "https",
+        hostname: "dummyjson.com",
+      },
     ],
     dangerouslyAllowSVG: true,
   },
