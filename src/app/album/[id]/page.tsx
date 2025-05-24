@@ -8,6 +8,8 @@ import {
   Image as ImageIcon,
   ChevronLeft,
   ChevronRight,
+  X,
+  ExternalLink,
 } from "lucide-react";
 import Navbar from "@/layouts/DefaultLayout/Navbar";
 import Sidebar from "@/layouts/DefaultLayout/Sidebar";
@@ -49,8 +51,48 @@ export default function AlbumDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [photosPerPage] = useState(12);
   const [currentPhotoPage, setCurrentPhotoPage] = useState(1);
+  const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const totalPhotoPages = Math.ceil(totalPhotos / photosPerPage);
+
+  // Function to replace placeholder URLs with dummyjson URLs
+  const getValidImageUrl = (url: string, fallbackId?: number): string => {
+    if (url.includes("via.placeholder.com")) {
+      const id = fallbackId || Math.floor(Math.random() * 1000) + 1;
+      return `https://dummyjson.com/image/400x300?text=Photo+${id}`;
+    }
+    return url;
+  };
+
+  // Handle image error and replace with fallback
+  const handleImageError = (
+    e: React.SyntheticEvent<HTMLImageElement>,
+    photo: Photo
+  ) => {
+    const target = e.target as HTMLImageElement;
+    if (!target.src.includes("dummyjson.com")) {
+      target.src = getValidImageUrl(photo.url, photo.id);
+    }
+  };
+
+  // Open photo modal
+  const handlePhotoClick = (photo: Photo) => {
+    setSelectedPhoto(photo);
+    setIsModalOpen(true);
+  };
+
+  // Close photo modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedPhoto(null);
+  };
+
+  // Open photo URL in new tab
+  const openPhotoUrl = (url: string) => {
+    const validUrl = getValidImageUrl(url);
+    window.open(validUrl, "_blank");
+  };
 
   useEffect(() => {
     const fetchAlbumDetails = async () => {
@@ -151,7 +193,7 @@ export default function AlbumDetailPage() {
                 <div className="flex items-center justify-center h-64">
                   <div className="text-center">
                     <div className="text-red-500 text-lg font-medium mb-2">
-                      Lỗi
+                      Error
                     </div>
                     <div className="text-gray-600">
                       {error || "Album không tồn tại"}
@@ -246,12 +288,14 @@ export default function AlbumDetailPage() {
                       {photos.map((photo) => (
                         <div
                           key={photo.id}
-                          className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+                          className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+                          onClick={() => handlePhotoClick(photo)}
                         >
                           <img
-                            src={photo.thumbnailUrl}
+                            src={getValidImageUrl(photo.thumbnailUrl, photo.id)}
                             alt={photo.title}
                             className="w-full h-40 object-cover"
+                            onError={(e) => handleImageError(e, photo)}
                           />
                           <div className="p-3">
                             <h4
@@ -328,6 +372,65 @@ export default function AlbumDetailPage() {
           </main>
         </div>
       </div>
+
+      {/* Photo Modal */}
+      {isModalOpen && selectedPhoto && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          onClick={closeModal}
+        >
+          <div
+            className="bg-white rounded-lg shadow-lg max-w-4xl max-h-[90vh] overflow-hidden relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-4 border-b">
+              <h3 className="text-lg font-semibold text-gray-900 truncate">
+                {selectedPhoto.title}
+              </h3>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => openPhotoUrl(selectedPhoto.url)}
+                  className="flex items-center px-3 py-1 text-sm text-blue-600 hover:text-blue-800 transition-colors"
+                  title="Open in new tab"
+                >
+                  <ExternalLink className="h-4 w-4 mr-1" />
+                  Open URL
+                </button>
+                <button
+                  onClick={closeModal}
+                  className="text-gray-500 hover:text-gray-700 transition-colors"
+                  title="Close"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-4">
+              <img
+                src={getValidImageUrl(selectedPhoto.url, selectedPhoto.id)}
+                alt={selectedPhoto.title}
+                className="w-full h-auto max-h-[70vh] object-contain cursor-pointer"
+                onClick={() => openPhotoUrl(selectedPhoto.url)}
+                onError={(e) => handleImageError(e, selectedPhoto)}
+              />
+              <div className="mt-4 text-sm text-gray-600">
+                <p>
+                  <strong>Photo ID:</strong> {selectedPhoto.id}
+                </p>
+                <p>
+                  <strong>Album ID:</strong> {selectedPhoto.albumId}
+                </p>
+                <p className="mt-2 text-xs text-gray-500">
+                  Click the image or "Open URL" to view in full size
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

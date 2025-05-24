@@ -1,7 +1,17 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Navbar from "@/layouts/DefaultLayout/Navbar";
 import Sidebar from "@/layouts/DefaultLayout/Sidebar";
 
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/album");
+  }, [router]);
+
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="flex">
@@ -11,13 +21,10 @@ export default function Home() {
           {/* Main content area */}
           <main className="flex-1 p-6 lg:p-8">
             <div className="bg-white rounded-lg shadow-sm p-6 min-h-[calc(100vh-8rem)]">
-              <h1 className="text-2xl font-bold text-gray-900 mb-4">
-                Welcome to MyApp
-              </h1>
-              <p className="text-gray-600">
-                This is the main content area. Select an option from the sidebar
-                to get started.
-              </p>
+              <div className="flex items-center justify-center h-64">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+                <span className="ml-3 text-gray-600">Redirecting...</span>
+              </div>
             </div>
           </main>
         </div>

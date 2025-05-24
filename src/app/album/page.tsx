@@ -77,9 +77,7 @@ function AlbumPageContent() {
               <div className="bg-white rounded-lg shadow-sm p-6 min-h-[calc(100vh-8rem)]">
                 <div className="flex items-center justify-center h-64">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-                  <span className="ml-3 text-gray-600">
-                    Đang tải dữ liệu...
-                  </span>
+                  <span className="ml-3 text-gray-600">Loading...</span>
                 </div>
               </div>
             </main>

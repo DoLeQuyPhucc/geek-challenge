@@ -49,14 +49,14 @@ const Sidebar = () => {
       {/* Sidebar */}
       <div
         className={`
-          fixed inset-y-0 left-0 z-50 w-64 bg-gray-50 border-r border-gray-200 transform transition-transform duration-300 ease-in-out
+          fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out
           lg:translate-x-0 lg:static lg:inset-0 lg:h-screen
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
         `}
       >
         <div className="flex flex-col h-full">
           {/* Sidebar header */}
-          <div className="p-4 lg:p-6 pt-16 lg:pt-6 bg-white">
+          <div className="p-4 lg:p-6 pt-16 lg:pt-6">
             <img
               src="https://geekup.vn/Icons/geekup-logo-general.svg"
               alt="GeekUp Logo"
@@ -66,7 +66,7 @@ const Sidebar = () => {
           </div>
 
           {/* Menu items */}
-          <nav className="flex-1 px-4 lg:px-6 py-4 bg-white">
+          <nav className="flex-1 px-4 lg:px-6 py-4">
             <ul className="space-y-2">
               {menuItems.map((item) => {
                 const IconComponent = item.icon;
