@@ -1,36 +1,28 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hướng dẫn cài đặt và chạy dự án
 
-## Getting Started
+## 1. Clone repo từ GitHub về
 
-First, run the development server:
+Mở terminal và chạy lệnh sau để clone dự án về máy:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+git clone https://github.com/DoLeQuyPhucc/geek-challenge.git
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 2. Tải Visual Studio Code
+Tải và cài đặt Visual Studio Code tại: https://code.visualstudio.com/
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 3. Tải Node.js
+Tải và cài đặt Node.js tại: https://nodejs.org/
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 4. Mở thư mục dự án trong Visual Studio Code
+Mở Visual Studio Code
 
-## Learn More
+Chọn File > Open Folder... và chọn thư mục vừa clone về
 
-To learn more about Next.js, take a look at the following resources:
+Mở terminal bằng cách nhấn Ctrl + J
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 5. Cài đặt các gói cần thiết
+Trong terminal, chạy lệnh sau để cài đặt các dependencies: npm install
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 6. Chạy dự án
+Sau khi cài đặt xong, chạy lệnh: npm run dev
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Sau đó, nhấn vào link hiển thị port trong terminal (ví dụ: http://localhost:3000) để mở ứng dụng trong trình duyệt.

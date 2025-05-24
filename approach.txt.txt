@@ -1,0 +1,33 @@
+MÔ TẢ CÁCH TIẾP CẬN VÀ CÔNG CỤ/THƯ VIỆN SỬ DỤNG
+
+1. React + Next.js
+- Lý do sử dụng: React là thư viện mạnh mẽ để xây dựng giao diện người dùng. Next.js bổ sung khả năng render phía server, tối ưu SEO và routing.
+- Lợi ích: Tốc độ nhanh, hỗ trợ SEO tốt, quản lý route và phát triển thuận tiện.
+
+2. TypeScript
+- Lý do sử dụng: Hệ thống kiểu tĩnh giúp kiểm tra lỗi sớm và hỗ trợ phát triển lâu dài.
+- Lợi ích: Tự động gợi ý code, tăng độ ổn định, dễ bảo trì.
+
+3. Axios
+- Lý do sử dụng: Gọi API dễ dàng, hỗ trợ interceptor để xử lý lỗi, token, headers.
+- Lợi ích: Dễ dùng, hoạt động tốt với async/await.
+
+4. Tailwind CSS
+- Lý do sử dụng: CSS utility-first giúp phát triển UI nhanh chóng.
+- Lợi ích: Không cần viết CSS riêng, dễ tùy biến, tăng tốc độ phát triển.
+
+5. shadcn/ui
+- Lý do sử dụng: Bộ component hiện đại, tích hợp tốt với Tailwind CSS.
+- Lợi ích: Thiết kế đẹp, dễ tùy chỉnh, tiết kiệm thời gian xây dựng giao diện.
+
+6. lucide-react
+- Lý do sử dụng: Thư viện icon open-source hiện đại, dễ dùng trong JSX.
+- Lợi ích: Nhẹ, đẹp, tùy biến linh hoạt.
+
+7. .env (Environment Variables)
+- Lý do sử dụng: Lưu các biến môi trường như API URL, key.
+- Lợi ích: Tách biệt cấu hình khỏi mã nguồn, dễ quản lý theo từng môi trường.
+
+8. ESLint
+- Lý do sử dụng: Kiểm tra code theo chuẩn, phát hiện lỗi sớm.
+- Lợi ích: Code sạch, thống nhất, giảm bug trong quá trình phát triển.
