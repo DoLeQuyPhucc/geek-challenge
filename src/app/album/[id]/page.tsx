@@ -1,0 +1,338 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import {
+  ArrowLeft,
+  User,
+  Image as ImageIcon,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import Navbar from "@/layouts/DefaultLayout/Navbar";
+import Sidebar from "@/layouts/DefaultLayout/Sidebar";
+import { albumService, userService } from "@/api/axiosInstance";
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  username: string;
+  phone: string;
+  website: string;
+}
+
+interface Album {
+  id: number;
+  title: string;
+  userId: number;
+  user?: User;
+}
+
+interface Photo {
+  id: number;
+  title: string;
+  url: string;
+  thumbnailUrl: string;
+  albumId: number;
+}
+
+export default function AlbumDetailPage() {
+  const params = useParams();
+  const router = useRouter();
+  const albumId = params.id as string;
+
+  const [album, setAlbum] = useState<Album | null>(null);
+  const [photos, setPhotos] = useState<Photo[]>([]);
+  const [totalPhotos, setTotalPhotos] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [photosPerPage] = useState(12);
+  const [currentPhotoPage, setCurrentPhotoPage] = useState(1);
+
+  const totalPhotoPages = Math.ceil(totalPhotos / photosPerPage);
+
+  useEffect(() => {
+    const fetchAlbumDetails = async () => {
+      try {
+        setLoading(true);
+
+        // Fetch album and user data
+        const albumResponse = await albumService.get(`/albums/${albumId}`);
+        const albumData = albumResponse.data;
+
+        // Fetch user data
+        const userResponse = await userService.get(
+          `/users/${albumData.userId}`
+        );
+        const userData = userResponse.data;
+
+        setAlbum({ ...albumData, user: userData });
+
+        // Get total photos count first
+        const allPhotosResponse = await albumService.get(
+          `/photos?albumId=${albumId}`
+        );
+        setTotalPhotos(allPhotosResponse.data.length);
+      } catch (err) {
+        setError("Không thể tải chi tiết album. Vui lòng thử lại sau.");
+        console.error("Error fetching album details:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (albumId) {
+      fetchAlbumDetails();
+    }
+  }, [albumId]);
+
+  useEffect(() => {
+    const fetchPhotos = async () => {
+      try {
+        const start = (currentPhotoPage - 1) * photosPerPage;
+        const end = start + photosPerPage;
+
+        const photosResponse = await albumService.get(
+          `/photos?_start=${start}&_end=${end}&albumId=${albumId}`
+        );
+
+        setPhotos(photosResponse.data);
+      } catch (err) {
+        console.error("Error fetching photos:", err);
+      }
+    };
+
+    if (albumId && totalPhotos > 0) {
+      fetchPhotos();
+    }
+  }, [albumId, currentPhotoPage, photosPerPage, totalPhotos]);
+
+  const generateAvatarUrl = (name: string) => {
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(
+      name
+    )}&background=random&color=fff&size=64`;
+  };
+
+  const handlePhotoPageChange = (page: number) => {
+    setCurrentPhotoPage(Math.max(1, Math.min(page, totalPhotoPages)));
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-100">
+        <div className="flex">
+          <Sidebar />
+          <div className="flex-1 flex flex-col">
+            <Navbar />
+            <main className="flex-1 p-6 lg:p-8">
+              <div className="bg-white rounded-lg shadow-sm p-6 min-h-[calc(100vh-8rem)]">
+                <div className="flex items-center justify-center h-64">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+                  <span className="ml-3 text-gray-600">
+                    Đang tải chi tiết album...
+                  </span>
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !album) {
+    return (
+      <div className="min-h-screen bg-gray-100">
+        <div className="flex">
+          <Sidebar />
+          <div className="flex-1 flex flex-col">
+            <Navbar />
+            <main className="flex-1 p-6 lg:p-8">
+              <div className="bg-white rounded-lg shadow-sm p-6 min-h-[calc(100vh-8rem)]">
+                <div className="flex items-center justify-center h-64">
+                  <div className="text-center">
+                    <div className="text-red-500 text-lg font-medium mb-2">
+                      Lỗi
+                    </div>
+                    <div className="text-gray-600">
+                      {error || "Album không tồn tại"}
+                    </div>
+                    <button
+                      onClick={() => router.push("/album")}
+                      className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+                    >
+                      Quay lại danh sách
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <div className="flex">
+        <Sidebar />
+        <div className="flex-1 flex flex-col">
+          <Navbar />
+          <main className="flex-1 p-6 lg:p-8">
+            <div className="bg-white rounded-lg shadow-sm p-6 min-h-[calc(100vh-8rem)]">
+              {/* Header */}
+              <div className="flex items-center mb-6">
+                <button
+                  onClick={() => router.push("/album")}
+                  className="flex items-center text-gray-600 hover:text-gray-900 transition-colors mr-4"
+                >
+                  <ArrowLeft className="h-5 w-5 mr-1" />
+                  Quay lại
+                </button>
+                <h1 className="text-2xl font-bold text-gray-900">
+                  Chi tiết Album
+                </h1>
+              </div>
+
+              {/* Album Info */}
+              <div className="bg-gray-50 rounded-lg p-6 mb-8">
+                <div className="flex items-start space-x-6">
+                  <div className="flex-shrink-0">
+                    <img
+                      src={generateAvatarUrl(album.user?.name || "Unknown")}
+                      alt={album.user?.name || "Unknown"}
+                      className="h-16 w-16 rounded-full"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                      {album.title}
+                    </h2>
+                    <div className="space-y-2">
+                      <div className="flex items-center text-gray-600">
+                        <User className="h-4 w-4 mr-2" />
+                        <span className="font-medium">{album.user?.name}</span>
+                        <span className="ml-2 text-sm">
+                          (@{album.user?.username})
+                        </span>
+                      </div>
+                      <div className="flex items-center text-gray-600">
+                        <ImageIcon className="h-4 w-4 mr-2" />
+                        <span>{totalPhotos} ảnh</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm text-gray-500">Album ID</div>
+                    <div className="text-lg font-semibold text-gray-900">
+                      #{album.id}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Photos Grid */}
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Ảnh trong Album
+                  </h3>
+                  <span className="text-sm text-gray-500">
+                    Trang {currentPhotoPage} / {totalPhotoPages} ({totalPhotos}{" "}
+                    ảnh)
+                  </span>
+                </div>
+
+                {photos.length > 0 ? (
+                  <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
+                      {photos.map((photo) => (
+                        <div
+                          key={photo.id}
+                          className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+                        >
+                          <img
+                            src={photo.thumbnailUrl}
+                            alt={photo.title}
+                            className="w-full h-40 object-cover"
+                          />
+                          <div className="p-3">
+                            <h4
+                              className="text-sm font-medium text-gray-900 truncate"
+                              title={photo.title}
+                            >
+                              {photo.title}
+                            </h4>
+                            <p className="text-xs text-gray-500 mt-1">
+                              ID: {photo.id}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Photo Pagination */}
+                    {totalPhotoPages > 1 && (
+                      <div className="flex items-center justify-center space-x-2">
+                        <button
+                          onClick={() =>
+                            handlePhotoPageChange(currentPhotoPage - 1)
+                          }
+                          disabled={currentPhotoPage === 1}
+                          className="flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <ChevronLeft className="h-4 w-4 mr-1" />
+                          Trước
+                        </button>
+
+                        <div className="flex space-x-1">
+                          {Array.from(
+                            { length: Math.min(5, totalPhotoPages) },
+                            (_, i) => {
+                              const page = i + 1;
+                              return (
+                                <button
+                                  key={page}
+                                  onClick={() => handlePhotoPageChange(page)}
+                                  className={`px-3 py-2 text-sm font-medium rounded-md ${
+                                    currentPhotoPage === page
+                                      ? "bg-blue-50 border-blue-500 text-blue-600 border"
+                                      : "text-gray-500 hover:bg-gray-50 border border-gray-300"
+                                  }`}
+                                >
+                                  {page}
+                                </button>
+                              );
+                            }
+                          )}
+                        </div>
+
+                        <button
+                          onClick={() =>
+                            handlePhotoPageChange(currentPhotoPage + 1)
+                          }
+                          disabled={currentPhotoPage === totalPhotoPages}
+                          className="flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          Sau
+                          <ChevronRight className="h-4 w-4 ml-1" />
+                        </button>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="text-center py-12 text-gray-500">
+                    <ImageIcon className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                    <p>Album này chưa có ảnh nào</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+  );
+}
