@@ -14,12 +14,12 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <div className="flex">
+      <div className="flex min-h-screen">
         <Sidebar />
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col bg-white">
           <Navbar />
           {/* Main content area */}
-          <main className="flex-1 p-6 lg:p-8">
+          <main className="flex-1 p-6 lg:p-8 bg-gray-100">
             <div className="bg-white rounded-lg shadow-sm p-6 min-h-[calc(100vh-8rem)]">
               <div className="flex items-center justify-center h-64">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>

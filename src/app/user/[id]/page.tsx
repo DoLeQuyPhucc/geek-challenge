@@ -148,17 +148,7 @@ export default function UserDetailPage() {
         <div className="flex-1 flex flex-col">
           <Navbar />
           <main className="flex-1 p-6 lg:p-8">
-            <div className="bg-white rounded-lg shadow-sm p-6 min-h-[calc(100vh-8rem)]">
-              {/* Header */}
-              <div className="flex items-center mb-6">
-                <button
-                  onClick={() => router.push("/user")}
-                  className="flex items-center text-gray-600 hover:text-gray-900 transition-colors mr-4"
-                >
-                  <ArrowLeft className="h-5 w-5 mr-1" />
-                </button>
-                <h1 className="text-2xl font-bold text-gray-900">Show User</h1>
-              </div>
+                        <div className="bg-white rounded-lg shadow-sm p-6 min-h-[calc(100vh-8rem)]">              {/* Header */}              <div className="flex items-center mb-6">                <button                  onClick={() => router.back()}                  className="flex items-center text-gray-600 hover:text-gray-900 transition-colors mr-4"                >                  <ArrowLeft className="h-5 w-5 mr-1" />                </button>                <h1 className="text-2xl font-bold text-gray-900">Show User</h1>              </div>
 
               {/* User Info */}
               <div className="bg-gray-50 rounded-lg p-6 mb-8">

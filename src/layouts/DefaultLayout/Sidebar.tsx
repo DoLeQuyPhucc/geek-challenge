@@ -22,6 +22,17 @@ const Sidebar = () => {
     },
   ];
 
+  // Check if current path is active (including child routes)
+  const isActiveRoute = (href: string) => {
+    if (href === "/album") {
+      return pathname === "/album" || pathname.startsWith("/album/");
+    }
+    if (href === "/user") {
+      return pathname === "/user" || pathname.startsWith("/user/");
+    }
+    return pathname === href;
+  };
+
   return (
     <>
       {/* Mobile menu button */}
@@ -50,27 +61,31 @@ const Sidebar = () => {
       <div
         className={`
           fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out
-          lg:translate-x-0 lg:static lg:inset-0 lg:h-screen
+          lg:translate-x-0 lg:static lg:inset-0 lg:min-h-screen
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
         `}
       >
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col min-h-screen bg-white">
           {/* Sidebar header */}
-          <div className="p-4 lg:p-6 pt-16 lg:pt-6">
-            <img
-              src="https://geekup.vn/Icons/geekup-logo-general.svg"
-              alt="GeekUp Logo"
-              className="h-7 w-auto"
-              style={{ aspectRatio: "15/4" }}
-            />
+          <div className="p-4 lg:p-6 pt-16 lg:pt-6 bg-white">
+            <Link href="/album">
+              <button>
+                <img
+                  src="https://geekup.vn/Icons/geekup-logo-general.svg"
+                  alt="GeekUp Logo"
+                  className="h-7 w-auto"
+                  style={{ aspectRatio: "15/4" }}
+                />
+              </button>
+            </Link>
           </div>
 
           {/* Menu items */}
-          <nav className="flex-1 px-4 lg:px-6 py-4">
+          <nav className="flex-1 px-4 lg:px-6 py-4 bg-white">
             <ul className="space-y-2">
               {menuItems.map((item) => {
                 const IconComponent = item.icon;
-                const isActive = pathname === item.href;
+                const isActive = isActiveRoute(item.href);
                 return (
                   <li key={item.name}>
                     <Link
