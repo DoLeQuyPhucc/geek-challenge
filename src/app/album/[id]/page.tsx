@@ -11,6 +11,7 @@ import {
   X,
   ExternalLink,
   Mail,
+  ChevronRight as BreadcrumbChevron,
 } from "lucide-react";
 import Navbar from "@/layouts/DefaultLayout/Navbar";
 import Sidebar from "@/layouts/DefaultLayout/Sidebar";
@@ -229,15 +230,37 @@ export default function AlbumDetailPage() {
         <div className="flex-1 flex flex-col">
           <Navbar />
           <main className="flex-1 p-6 lg:p-8">
-                        <div className="bg-white rounded-lg shadow-sm p-6 min-h-[calc(100vh-8rem)]">              {/* Header */}              <div className="flex items-center mb-6">                <button                  onClick={() => router.back()}                  className="flex items-center text-gray-600 hover:text-gray-900 transition-colors mr-4"                >                  <ArrowLeft className="h-5 w-5 mr-1" />                </button>                <h1 className="text-2xl font-bold text-gray-900">Show Album</h1>              </div>
+            <div className="bg-white rounded-lg shadow-sm p-6 min-h-[calc(100vh-8rem)]">
+              {/* Header */}
+              <div className="flex items-center mb-6">
+                <button
+                  onClick={() => router.back()}
+                  className="flex items-center text-gray-600 hover:text-gray-900 transition-colors mr-4"
+                >
+                  <ArrowLeft className="h-5 w-5 mr-1" />
+                </button>
+                <h1 className="text-2xl font-bold text-gray-900">Show Album</h1>
+              </div>
+
+              {/* Breadcrumbs */}
+              <div className="flex items-center space-x-2 text-sm text-gray-500 mb-6">
+                <button
+                  onClick={() => router.push("/album")}
+                  className="hover:text-blue-600 transition-colors"
+                >
+                  Album
+                </button>
+                <BreadcrumbChevron className="h-4 w-4" />
+                <span className="text-gray-900 font-medium">Show</span>
+              </div>
 
               {/* Album Info */}
               <div className="bg-gray-50 rounded-lg p-6 mb-8">
                 <div className="flex items-start space-x-6">
-                  <div 
+                  <div
                     className="flex-shrink-0 cursor-pointer"
                     onClick={handleUserClick}
-                    title={`View user ${album.user?.name || 'Unknown'}`}
+                    title={`View user ${album.user?.name || "Unknown"}`}
                   >
                     <img
                       src={generateAvatarUrl(album.user?.name || "Unknown")}
@@ -246,10 +269,10 @@ export default function AlbumDetailPage() {
                     />
                   </div>
                   <div className="flex-1">
-                    <h2 
+                    <h2
                       className="text-xl font-semibold text-blue-600 hover:text-blue-800 mb-2 cursor-pointer transition-colors"
                       onClick={handleUserClick}
-                      title={`View user ${album.user?.name || 'Unknown'}`}
+                      title={`View user ${album.user?.name || "Unknown"}`}
                     >
                       {album.user?.name}
                     </h2>
