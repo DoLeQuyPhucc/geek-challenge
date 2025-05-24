@@ -129,9 +129,7 @@ export default function AlbumDetailPage() {
               <div className="bg-white rounded-lg shadow-sm p-6 min-h-[calc(100vh-8rem)]">
                 <div className="flex items-center justify-center h-64">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-                  <span className="ml-3 text-gray-600">
-                    Đang tải chi tiết album...
-                  </span>
+                  <span className="ml-3 text-gray-600">Album Loading...</span>
                 </div>
               </div>
             </main>
@@ -162,7 +160,7 @@ export default function AlbumDetailPage() {
                       onClick={() => router.push("/album")}
                       className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
                     >
-                      Quay lại danh sách
+                      Back to List
                     </button>
                   </div>
                 </div>
@@ -189,11 +187,8 @@ export default function AlbumDetailPage() {
                   className="flex items-center text-gray-600 hover:text-gray-900 transition-colors mr-4"
                 >
                   <ArrowLeft className="h-5 w-5 mr-1" />
-                  Quay lại
                 </button>
-                <h1 className="text-2xl font-bold text-gray-900">
-                  Chi tiết Album
-                </h1>
+                <h1 className="text-2xl font-bold text-gray-900">Show Album</h1>
               </div>
 
               {/* Album Info */}
@@ -220,7 +215,7 @@ export default function AlbumDetailPage() {
                       </div>
                       <div className="flex items-center text-gray-600">
                         <ImageIcon className="h-4 w-4 mr-2" />
-                        <span>{totalPhotos} ảnh</span>
+                        <span>{totalPhotos} photos</span>
                       </div>
                     </div>
                   </div>
@@ -237,11 +232,11 @@ export default function AlbumDetailPage() {
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900">
-                    Ảnh trong Album
+                    Photos in Album
                   </h3>
                   <span className="text-sm text-gray-500">
-                    Trang {currentPhotoPage} / {totalPhotoPages} ({totalPhotos}{" "}
-                    ảnh)
+                    Page {currentPhotoPage} / {totalPhotoPages} ({totalPhotos}{" "}
+                    photos)
                   </span>
                 </div>
 
@@ -284,7 +279,7 @@ export default function AlbumDetailPage() {
                           className="flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           <ChevronLeft className="h-4 w-4 mr-1" />
-                          Trước
+                          Previous
                         </button>
 
                         <div className="flex space-x-1">
@@ -316,7 +311,7 @@ export default function AlbumDetailPage() {
                           disabled={currentPhotoPage === totalPhotoPages}
                           className="flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          Sau
+                          Next
                           <ChevronRight className="h-4 w-4 ml-1" />
                         </button>
                       </div>
@@ -325,7 +320,7 @@ export default function AlbumDetailPage() {
                 ) : (
                   <div className="text-center py-12 text-gray-500">
                     <ImageIcon className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                    <p>Album này chưa có ảnh nào</p>
+                    <p>This album has no photos</p>
                   </div>
                 )}
               </div>

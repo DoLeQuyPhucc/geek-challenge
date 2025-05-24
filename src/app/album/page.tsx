@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, Suspense } from 'react';
-import { useRouter } from 'next/navigation';
-import AlbumTable from '@/components/Albums/AlbumTable';
+import React, { useState, useEffect, Suspense } from "react";
+import { useRouter } from "next/navigation";
+import AlbumTable from "@/components/Albums/AlbumTable";
 import Navbar from "@/layouts/DefaultLayout/Navbar";
 import Sidebar from "@/layouts/DefaultLayout/Sidebar";
-import { getAlbumsWithUsers } from '@/services/AlbumService';
-import { usePagination } from '@/hooks/usePagination';
+import { getAlbumsWithUsers, getAlbumsCount } from "@/services/AlbumService";
+import { usePagination } from "@/hooks/usePagination";
 
 interface User {
   id: number;
@@ -25,43 +25,46 @@ interface Album {
 function AlbumPageContent() {
   const router = useRouter();
   const [albums, setAlbums] = useState<Album[]>([]);
+  const [totalAlbums, setTotalAlbums] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const {
-    currentPage,
-    totalPages,
-    itemsPerPage,
-    goToPage,
-    changePageSize,
-    getPaginatedData
-  } = usePagination({
-    totalItems: albums.length,
-    defaultItemsPerPage: 10
-  });
+  const { currentPage, totalPages, itemsPerPage, goToPage, changePageSize } =
+    usePagination({
+      totalItems: totalAlbums,
+      defaultItemsPerPage: 10,
+    });
 
   useEffect(() => {
     const fetchAlbums = async () => {
       try {
         setLoading(true);
-        const data = await getAlbumsWithUsers();
+        const _start = (currentPage - 1) * itemsPerPage;
+        const _end = _start + itemsPerPage;
+
+        const [data, totalCount] = await Promise.all([
+          getAlbumsWithUsers({ _start, _end }),
+          totalAlbums === 0 ? getAlbumsCount() : Promise.resolve(totalAlbums),
+        ]);
+
         setAlbums(data);
+        if (totalAlbums === 0) {
+          setTotalAlbums(totalCount);
+        }
       } catch (err) {
-        setError('Không thể tải dữ liệu album. Vui lòng thử lại sau.');
-        console.error('Error fetching albums:', err);
+        setError("Không thể tải dữ liệu album. Vui lòng thử lại sau.");
+        console.error("Error fetching albums:", err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchAlbums();
-  }, []);
+  }, [currentPage, itemsPerPage, totalAlbums]);
 
   const handleViewDetail = (albumId: number) => {
     router.push(`/album/${albumId}`);
   };
-
-  const paginatedAlbums = getPaginatedData(albums);
 
   if (loading) {
     return (
@@ -74,7 +77,9 @@ function AlbumPageContent() {
               <div className="bg-white rounded-lg shadow-sm p-6 min-h-[calc(100vh-8rem)]">
                 <div className="flex items-center justify-center h-64">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-                  <span className="ml-3 text-gray-600">Đang tải dữ liệu...</span>
+                  <span className="ml-3 text-gray-600">
+                    Đang tải dữ liệu...
+                  </span>
                 </div>
               </div>
             </main>
@@ -95,7 +100,9 @@ function AlbumPageContent() {
               <div className="bg-white rounded-lg shadow-sm p-6 min-h-[calc(100vh-8rem)]">
                 <div className="flex items-center justify-center h-64">
                   <div className="text-center">
-                    <div className="text-red-500 text-lg font-medium mb-2">Lỗi</div>
+                    <div className="text-red-500 text-lg font-medium mb-2">
+                      Lỗi
+                    </div>
                     <div className="text-gray-600">{error}</div>
                     <button
                       onClick={() => window.location.reload()}
@@ -121,13 +128,13 @@ function AlbumPageContent() {
           <Navbar />
           <main className="flex-1 p-6 lg:p-8">
             <div className="bg-white rounded-lg shadow-sm p-6 min-h-[calc(100vh-8rem)]">
-              <AlbumTable 
-                albums={paginatedAlbums}
+              <AlbumTable
+                albums={albums}
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={goToPage}
                 itemsPerPage={itemsPerPage}
-                totalItems={albums.length}
+                totalItems={totalAlbums}
                 onViewDetail={handleViewDetail}
                 onPageSizeChange={changePageSize}
               />
@@ -141,11 +148,13 @@ function AlbumPageContent() {
 
 export default function AlbumPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        </div>
+      }
+    >
       <AlbumPageContent />
     </Suspense>
   );
